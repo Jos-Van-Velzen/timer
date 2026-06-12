@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netlify Test Timer</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 100px;
+    background-color: #f4f4f4;
+}
+
+#timer {
+    font-size: 80px;
+    font-weight: bold;
+    margin: 30px;
+    color: #0066cc;
+}
+
+#eindscherm {
+    display: none;
+    font-size: 40px;
+    color: #cc0000;
+    font-weight: bold;
+    margin: 30px;
+}
+
+button {
+    font-size: 18px;
+    padding: 12px 24px;
+    margin: 10px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>Netlify Test Timer</h1>
+
+<div id="timer">10</div>
+<div id="eindscherm">⏰ Tijd voorbij!</div>
+
+<button onclick="startTimer()">Start / Herstart</button>
+<button onclick="stopTimer()">Stop</button>
+
+<script>
+let countdown;
+let timeLeft = 10;
+
+function updateDisplay() {
+    document.getElementById("timer").textContent = timeLeft;
+}
+
+function startTimer() {
+    clearInterval(countdown);
+
+    timeLeft = 10;
+    document.getElementById("timer").style.display = "block";
+    document.getElementById("eindscherm").style.display = "none";
+
+    updateDisplay();
+
+    countdown = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("eindscherm").style.display = "block";
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(countdown);
+}
+</script>
+
+</body>
+</html>
