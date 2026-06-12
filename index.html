@@ -10,6 +10,7 @@ body {
     text-align: center;
     margin-top: 100px;
     background-color: #f4f4f4;
+    overflow: hidden;
 }
 
 #timer {
@@ -33,13 +34,33 @@ button {
     margin: 10px;
     cursor: pointer;
 }
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 10px;
+    opacity: 0.9;
+    animation-name: vallen;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes vallen {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(110vh) rotate(720deg);
+    }
+}
 </style>
 </head>
 <body>
 
 <h1>Netlify Test Timer</h1>
 
-<div id="timer">10</div>
+<div id="timer">5</div>
 <div id="eindscherm">⏰ Tijd voorbij!</div>
 
 <button onclick="startTimer()">Start / Herstart</button>
@@ -47,7 +68,8 @@ button {
 
 <script>
 let countdown;
-let timeLeft = 10;
+let timeLeft = 5;
+const startTime = 5;
 
 function updateDisplay() {
     document.getElementById("timer").textContent = timeLeft;
@@ -55,8 +77,9 @@ function updateDisplay() {
 
 function startTimer() {
     clearInterval(countdown);
+    verwijderConfetti();
 
-    timeLeft = 10;
+    timeLeft = startTime;
     document.getElementById("timer").style.display = "block";
     document.getElementById("eindscherm").style.display = "none";
 
@@ -70,12 +93,36 @@ function startTimer() {
             clearInterval(countdown);
             document.getElementById("timer").style.display = "none";
             document.getElementById("eindscherm").style.display = "block";
+            startConfetti();
         }
     }, 1000);
 }
 
 function stopTimer() {
     clearInterval(countdown);
+}
+
+function startConfetti() {
+    const kleuren = ["#ff4d4d", "#ffd633", "#33cc33", "#3399ff", "#cc66ff", "#ff9933"];
+
+    for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = kleuren[Math.floor(Math.random() * kleuren.length)];
+        confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
+        confetti.style.animationDelay = Math.random() * 0.6 + "s";
+        confetti.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+            confetti.remove();
+        }, 5500);
+    }
+}
+
+function verwijderConfetti() {
+    document.querySelectorAll(".confetti").forEach(confetti => confetti.remove());
 }
 </script>
 
