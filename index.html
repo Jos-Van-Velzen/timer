@@ -28,11 +28,24 @@ body {
     margin: 30px;
 }
 
+.keuzeknoppen {
+    margin: 20px 0;
+}
+
 button {
     font-size: 18px;
     padding: 12px 24px;
     margin: 10px;
     cursor: pointer;
+    border: 1px solid #999;
+    border-radius: 8px;
+    background-color: white;
+}
+
+button.actief {
+    background-color: #0066cc;
+    color: white;
+    border-color: #0066cc;
 }
 
 .confetti {
@@ -63,23 +76,47 @@ button {
 <div id="timer">5</div>
 <div id="eindscherm">⏰ Tijd voorbij!</div>
 
+<div class="keuzeknoppen">
+    <button id="knop3" onclick="kiesTijd(3)">3 seconden</button>
+    <button id="knop5" class="actief" onclick="kiesTijd(5)">5 seconden</button>
+    <button id="knop7" onclick="kiesTijd(7)">7 seconden</button>
+</div>
+
 <button onclick="startTimer()">Start / Herstart</button>
 <button onclick="stopTimer()">Stop</button>
 
 <script>
 let countdown;
-let timeLeft = 5;
-const startTime = 5;
+let gekozenTijd = 5;
+let timeLeft = gekozenTijd;
 
 function updateDisplay() {
     document.getElementById("timer").textContent = timeLeft;
+}
+
+function kiesTijd(seconden) {
+    clearInterval(countdown);
+    verwijderConfetti();
+
+    gekozenTijd = seconden;
+    timeLeft = gekozenTijd;
+
+    document.getElementById("timer").style.display = "block";
+    document.getElementById("eindscherm").style.display = "none";
+
+    document.querySelectorAll(".keuzeknoppen button").forEach(knop => {
+        knop.classList.remove("actief");
+    });
+    document.getElementById("knop" + seconden).classList.add("actief");
+
+    updateDisplay();
 }
 
 function startTimer() {
     clearInterval(countdown);
     verwijderConfetti();
 
-    timeLeft = startTime;
+    timeLeft = gekozenTijd;
     document.getElementById("timer").style.display = "block";
     document.getElementById("eindscherm").style.display = "none";
 
